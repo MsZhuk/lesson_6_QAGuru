@@ -4,7 +4,8 @@
   "main": "index.js",
   "scripts": {
     "debug": "npx playwright test --ui",
-    "test": "npx playwright test"
+    "test": "npx playwright test",
+    "url": "https://realworld.qa.guru/"
   },
   "keywords": [],
   "author": "",
