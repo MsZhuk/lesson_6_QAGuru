@@ -1,13 +1,13 @@
 import { test, expect } from '@playwright/test';
 import { fa, faker } from '@faker-js/faker';
-import { MainPage, RegisterPage } from "../src/pages/index";
+import { MainPage, RegisterPage, SettingsPage} from "../src/pages/index";
 
 
 const url = 'https://realworld.qa.guru/#/';
 //describe - for test suit
 let newUser;
 
-test.describe.only('Демо', () => {
+test.describe.only('Первые тесты', () => {
   test.beforeEach(async ({ page }) => {
 newUser = {
   userBio : faker.music.genre(),
@@ -27,17 +27,20 @@ newUser = {
 });
 
 test('Пользователь может изменить bio', async ({ page }) => {
-await page.locator('.dropdown-toggle').click();
-//const demo = await page.getByRole('link').all();
-await page.getByRole('link', { name: 'Settings'}).click();
-await page.getByPlaceholder('Short bio about you').click();
-await page.getByPlaceholder('Short bio about you').fill(newUser.userBio);
-await page.getByRole('button', 'Update Settings');
-await expect(page.getByPlaceholder('Short bio about you')).toContainText(newUser.userBio);
+  const mainPage = new MainPage(page);
+  const settingsPage = new SettingsPage(page);
+
+  await mainPage.goToSettings();
+  await settingsPage.enterUserBio(newUser.userBio);
+  await settingsPage.updateProfileSimple();
+  await expect(settingsPage.bioField).toContainText(newUser.userBio);
 });
 
 test('Добавить первую статью', async ({ page }) => {
-  await page.getByRole('link', { name: 'New Article' }).click();
+  const mainPage = new MainPage(page);
+  const settingsPage = new SettingsPage(page);
+
+  await mainPage.clickArticle();
   await page.getByPlaceholder('Article Title').click();
   await page.getByPlaceholder('Article Title').fill('My first article');
   await page.getByPlaceholder("What's this article about?").click();
@@ -50,20 +53,22 @@ test('Добавить первую статью', async ({ page }) => {
 });
 
 test('Обновить имя пользователя', async ({ page }) => {
-  await page.locator('.dropdown-toggle').click();
-  await page.getByRole('link', { name: 'Settings'}).click();
+  const mainPage = new MainPage(page);
+ 
+  await mainPage.goToSettings();
   await page.getByPlaceholder('Your Name').click();
   await page.getByPlaceholder('Your Name').clear();
   await page.getByPlaceholder('Your Name').fill('Olga');
-  await page.getByRole('button', 'Update Settings').click(); 
+  await mainPage.updateSettings(); 
 });
 
 test('Добавить url', async ({ page }) => {
-  await page.locator('.dropdown-toggle').click();
-  await page.getByRole('link', { name: 'Settings'}).click();
+  const mainPage = new MainPage(page);
+ 
+  await mainPage.goToSettings();
   await page.getByPlaceholder('URL of profile picture').click();
   await page.getByPlaceholder('URL of profile picture').fill(newUser.urlPicture);
-  await page.getByRole('button', 'Update Settings').click(); 
+  await mainPage.updateSettings();  
 });
 
 test('Переход на стартовую страницу', async ({ page }) => {
@@ -71,8 +76,9 @@ test('Переход на стартовую страницу', async ({ page })
 });
 
 test('проверка logout', async ({ page }) => {
-  await page.locator('.dropdown-toggle').click();
-  await page.getByRole('link', { name: 'Logout'}).click();
+  const mainPage = new MainPage(page);
+  await mainPage.goToSettings();
+  await mainPage.logout();
 });
 
 });
