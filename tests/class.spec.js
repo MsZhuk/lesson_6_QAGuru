@@ -46,7 +46,7 @@ test('Добавить первую статью', async ({ page }) => {
   await page.getByPlaceholder('Write your article (in markdown)').fill(newUser.textArticle);
   await page.getByPlaceholder('Enter tags').click();
   await page.getByPlaceholder('Enter tags').fill('mytag');
-  await page.getByRole('button', 'Update Publish Article');
+  await page.getByRole('button', 'Update Publish Article').click();
 });
 
 test('Обновить имя пользователя', async ({ page }) => {
@@ -55,7 +55,7 @@ test('Обновить имя пользователя', async ({ page }) => {
   await page.getByPlaceholder('Your Name').click();
   await page.getByPlaceholder('Your Name').clear();
   await page.getByPlaceholder('Your Name').fill('Olga');
-  await page.getByRole('button', 'Update Settings'); 
+  await page.getByRole('button', 'Update Settings').click(); 
 });
 
 test('Добавить url', async ({ page }) => {
@@ -63,7 +63,7 @@ test('Добавить url', async ({ page }) => {
   await page.getByRole('link', { name: 'Settings'}).click();
   await page.getByPlaceholder('URL of profile picture').click();
   await page.getByPlaceholder('URL of profile picture').fill(newUser.urlPicture);
-  await page.getByRole('button', 'Update Settings'); 
+  await page.getByRole('button', 'Update Settings').click(); 
 });
 
 test('Переход на стартовую страницу', async ({ page }) => {
