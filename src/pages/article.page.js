@@ -35,6 +35,7 @@ export class ArticlePage extends BasePage {
     await this.articleButtonSend.click();
   };
 
+
 }
 
 
