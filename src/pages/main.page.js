@@ -6,30 +6,20 @@ export class MainPage extends BasePage {
     super(page);
     this.menuButton = this.page.locator('.dropdown-toggle');
     this.signupButton = page.getByRole('link', { name: 'Sign up' });
-    this.settingsButton = page.getByRole('link', { name: 'Settings'});
     this.article = page.getByRole('link', { name: 'New Article' });
-    this.updateButton = page.getByRole('button', 'Update Settings');
-    this.logoutButton = page.getByRole('link', { name: 'Logout'});
+    this.startpage = page.locator('.navbar-brand');
   }
   
   async register () {
     await this.signupButton.click();
   }
 
-  async goToSettings () {
-    await this.menuButton.click();
-    await this.settingsButton.click();
-  }; 
-
   async clickArticle () {
     await this.article.click();
   };
 
-  async updateSettings () {
-    await this.updateButton.click(); 
-   };
+  async goStartPage () {
+    await this.startpage.click();
+  }
 
-   async logout () {
-    await this.logoutButton.click(); 
-   }
 };
