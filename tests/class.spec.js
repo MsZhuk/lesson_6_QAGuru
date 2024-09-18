@@ -1,19 +1,17 @@
 import { test, expect } from '@playwright/test';
 import { fa, faker } from '@faker-js/faker';
-import { ArticlePage, MainPage, RegisterPage, SettingsPage} from "../src/pages/index";
-import { UrlPage } from '../src/pages/url.page';
-import { ADDRGETNETWORKPARAMS } from 'dns';
-
+import { ArticlePage, MainPage, RegisterPage, SettingsPage, BurgerMenuPage} from "../src/pages/index";
 
 const url = 'https://realworld.qa.guru/#/';
 //describe - for test suit
 let newUser;
 
-test.describe.only('Первые тесты', () => {
+test.describe('Первые тесты', () => {
   test.beforeEach(async ({ page }) => {
 newUser = {
   userBio : faker.music.genre(),
   userName : faker.person.firstName('female'),
+  userName2 : faker.person.firstName('female'),
   userEmail : faker.internet.email(),
   userPassword : faker.internet.password(),
   textArticle : faker.lorem.text(),
@@ -29,52 +27,59 @@ newUser = {
 });
 
 test('Пользователь может изменить bio', async ({ page }) => {
-  const mainPage = new MainPage(page);
+  const burgerMenuPage = new BurgerMenuPage(page);
   const settingsPage = new SettingsPage(page);
 
-  await mainPage.goToSettings();
+  await burgerMenuPage.goToSettings();
   await settingsPage.enterUserBio(newUser.userBio);
-  await settingsPage.updateProfileSimple();
   await expect(settingsPage.bioField).toContainText(newUser.userBio);
 });
 
 test('Добавить первую статью', async ({ page }) => {
   const mainPage = new MainPage(page);
   const articlePage = new ArticlePage(page);
+
   await mainPage.clickArticle();
   await articlePage.writeArticleTitle();
   await articlePage.writeArticleAbout();
   await articlePage.writeArticleText(newUser.textArticle);
   await articlePage.writeArticleTag();
   await articlePage.sendArticle();
+  await expect(articlePage.articleText).toContainText(newUser.textArticle);
 });
 
 test('Обновить имя пользователя', async ({ page }) => {
-  const mainPage = new MainPage(page);
+  const burgerMenuPage = new BurgerMenuPage(page);
+  const settingsPage = new SettingsPage(page);
+  const registerPage = new RegisterPage(page);
 
-  await mainPage.goToSettings();
-  await page.getByPlaceholder('Your Name').click();
-  await page.getByPlaceholder('Your Name').clear();
-  await page.getByPlaceholder('Your Name').fill('Olga');
-  await mainPage.updateSettings(); 
+  await burgerMenuPage.goToSettings();
+  await registerPage.updateUserInfo(newUser.userName2);
+  await settingsPage.updateProfileButton(); 
+  await expect(registerPage.userName).toContainText(newUser.userName2);
 });
 
 test('Добавить url', async ({ page }) => {
-  const mainPage = new MainPage(page);
-  const urlPage = new UrlPage(page);
-  await mainPage.goToSettings();
-  await urlPage.enterUrl(newUser.urlPicture);
-  await mainPage.updateSettings();  
+  const settingsPage = new SettingsPage(page);
+  const burgerMenuPage = new BurgerMenuPage(page);
+
+  await burgerMenuPage.goToSettings();
+  await settingsPage.enterUrl(newUser.urlPicture);
+  await settingsPage.updateProfileButton();
+  await expect(settingsPage.urlString).toContainText(newUser.urlPicture);  
 });
 
 test('Переход на стартовую страницу', async ({ page }) => {
-  await page.locator('.navbar-brand').click();
+  const mainPage = new MainPage(page);
+  await mainPage.goStartPage();
+  await expect(mainPage.startpage).toBeTruthy();
 });
 
 test('Проверка logout', async ({ page }) => {
-  const mainPage = new MainPage(page);
-  await mainPage.goToSettings();
-  await mainPage.logout();
+  const burgerMenu = new BurgerMenuPage(page);
+  await burgerMenu.goToSettings();
+  await burgerMenu.logout();
+  await expect(burgerMenu.logoutButton).toBeTruthy();
 });
 
 });
