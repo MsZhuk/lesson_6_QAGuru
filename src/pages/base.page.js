@@ -5,5 +5,5 @@ export class BasePage {
 
   async open (url) {
     await this.page.goto(url);
-  }
+  };
 }

@@ -15,5 +15,5 @@ export class BurgerMenuPage extends BasePage {
   }; 
   async logout () {
     await this.logoutButton.click(); 
-   }
+   };
 }

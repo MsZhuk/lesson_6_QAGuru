@@ -23,7 +23,7 @@ export class RegisterPage extends BasePage {
     await this.usernameField.clear();
     await this.usernameField.fill(userName2)
 
-  }
-}
+  };
+};
 
 
