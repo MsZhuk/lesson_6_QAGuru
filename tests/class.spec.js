@@ -6,7 +6,7 @@ const url = 'https://realworld.qa.guru/#/';
 //describe - for test suit
 let newUser;
 
-test.describe('Первые тесты!', () => {
+test.describe('Первые тесты', () => {
   test.beforeEach(async ({ page }) => {
 newUser = {
   userBio : faker.music.genre(),

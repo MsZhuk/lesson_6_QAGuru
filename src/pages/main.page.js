@@ -1,4 +1,4 @@
-import { th } from "@faker-js/faker";
+//import { th } from "@faker-js/faker";
 import { BasePage } from "./base.page";
 
 export class MainPage extends BasePage {

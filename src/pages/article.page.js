@@ -33,8 +33,7 @@ export class ArticlePage extends BasePage {
 
   async sendArticle(){
     await this.articleButtonSend.click();
-  };
-
+  }
 
 }
 

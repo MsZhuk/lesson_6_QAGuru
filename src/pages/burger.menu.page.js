@@ -13,7 +13,6 @@ export class BurgerMenuPage extends BasePage {
     await this.menuButton.click();
     await this.settingsButton.click();
   }; 
-
   async logout () {
     await this.logoutButton.click(); 
    }
