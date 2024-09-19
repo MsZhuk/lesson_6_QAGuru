@@ -35,4 +35,4 @@ async enterUrl(urlPicture){
     await this.urlString.fill(urlPicture);
   };
 
-}
+};

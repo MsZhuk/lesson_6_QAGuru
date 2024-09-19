@@ -18,13 +18,12 @@ export class RegisterPage extends BasePage {
     await this.passwordField.fill(userPassword);
     await this.signupButton.click();
   };
-
   async updateUserInfo (userName2) {
     await this.usernameField.click();
     await this.usernameField.clear();
     await this.usernameField.fill(userName2)
 
-  }
-}
+  };
+};
 
 
